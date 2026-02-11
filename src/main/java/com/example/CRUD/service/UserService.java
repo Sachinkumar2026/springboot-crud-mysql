@@ -12,6 +12,7 @@ public interface UserService {
     UserDTO getUserById(Long Id);
     void deleteUser(Long Id);
     UserDTO updateUser(Long id, UserDTO dto);
+    List<UserDTO> searchUserByName(String name);
 
     //    List<UserDTO> getAllUsers();
     //    User createUser(User user);

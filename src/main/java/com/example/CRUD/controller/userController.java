@@ -45,6 +45,11 @@ public class userController {
         return userService.getUserById(id);
     }
 
+    public ResponseEntity<List<UserDTO>> searchUsers(@RequestParam String name){
+        List<UserDTO> users = userService.searchUserByName(name);
+        return ResponseEntity.ok(users);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,
                                               @Valid @RequestBody UserDTO userDTO){

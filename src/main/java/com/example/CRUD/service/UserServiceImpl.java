@@ -74,6 +74,12 @@ public class UserServiceImpl implements UserService {
         return mapToDTO(updatedUser);
     }
 
+    public List<UserDTO> searchUserByName(String name){
+        return userRepository.findByNameContainingIgnoreCase(name).stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
