@@ -1,7 +1,6 @@
 package com.example.CRUD.service;
 
 import com.example.CRUD.DTO.UserDTO;
-import com.example.CRUD.entity.User;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

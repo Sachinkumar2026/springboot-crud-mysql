@@ -44,7 +44,7 @@ public class userController {
     public UserDTO getUser(@PathVariable Long id){
         return userService.getUserById(id);
     }
-
+    @GetMapping("/search")
     public ResponseEntity<List<UserDTO>> searchUsers(@RequestParam String name){
         List<UserDTO> users = userService.searchUserByName(name);
         return ResponseEntity.ok(users);
