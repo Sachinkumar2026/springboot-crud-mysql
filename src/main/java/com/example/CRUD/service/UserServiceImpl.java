@@ -1,0 +1,81 @@
+package com.example.CRUD.service;
+
+import com.example.CRUD.DTO.UserDTO;
+import com.example.CRUD.entity.User;
+import com.example.CRUD.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    private UserDTO mapToDTO(User user) {
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        return dto;
+    }
+
+    private User mapToEntity(UserDTO dto) {
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        return user;
+    }
+
+    @Override
+    public UserDTO createUser(UserDTO dto) {
+        User user = mapToEntity(dto);
+        User saved = userRepository.save(user);
+        return mapToDTO(saved);
+    }
+
+    @Override
+    public Page<UserDTO> getAllUsers(int page, int size,String sortBy,String direction) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+       Page<User> userPage = userRepository.findAll(
+               PageRequest.of(page,size,sort)
+       );
+        return userPage.map(this::mapToDTO);
+//        return userRepository.findAll()
+//                .stream()
+//                .map(this::mapToDTO)
+//                .toList();
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return mapToDTO(user);
+    }
+
+    @Override
+    public UserDTO updateUser(Long id, UserDTO dto){
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not Found"));
+        existingUser.setName(dto.getName());
+        existingUser.setEmail(dto.getEmail());
+        User updatedUser = userRepository.save(existingUser);
+
+        return mapToDTO(updatedUser);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+}
