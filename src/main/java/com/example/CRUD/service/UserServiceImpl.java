@@ -7,6 +7,7 @@ import com.example.CRUD.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private UserDTO mapToDTO(User user) {
@@ -40,6 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(UserDTO dto) {
         User user = mapToEntity(dto);
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         User saved = userRepository.save(user);
         return mapToDTO(saved);
     }
