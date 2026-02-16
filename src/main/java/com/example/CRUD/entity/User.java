@@ -13,6 +13,16 @@ public class User {
     private String name;
 
     @Column(unique = true)
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private String email;
 
     public Long getId() {
