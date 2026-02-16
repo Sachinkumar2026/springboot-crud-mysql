@@ -2,6 +2,7 @@ package com.example.CRUD.service;
 
 import com.example.CRUD.DTO.UserDTO;
 import com.example.CRUD.entity.User;
+import com.example.CRUD.exception.ResourceNotFoundException;
 import com.example.CRUD.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
         return mapToDTO(user);
     }
 
