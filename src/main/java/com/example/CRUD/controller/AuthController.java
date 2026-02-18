@@ -31,6 +31,6 @@ public class AuthController {
         if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
             throw new RuntimeException("Invalid credentials");
         }
-        return JWTUtil.generateToken(user.getEmail());
+        return JWTUtil.generateToken(user.getEmail(),user.getRole());
     }
 }

@@ -12,6 +12,16 @@ public class User {
     private Long id;
     private String name;
 
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Column(unique = true)
     private String password;
 
